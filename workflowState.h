@@ -17,13 +17,13 @@ class WorkItemState
 
         // changed from bool to void as they do not need to return and made them const as they won't change
         // Also made them virtual
-        virtual void pending(WorkflowInstance& workflow) const = 0; // Added: Pending for while they first submit their request and REMOVED "start". This is the default state when they begin
-        virtual void accepted(WorkflowInstance& workflow) const = 0; // Added: Bot checked request and accepted, now needs human approval
-        virtual void rejected(WorkflowInstance& workflow) const = 0; // Bot checked request and rejects
-        virtual void approved(WorkflowInstance& workflow) const = 0; // Human checks and approves or after some time passes (we will explain this time thing not code it)
-        virtual void denied(WorkflowInstance& workflow) const = 0; // Human chceks and denies the project
-        virtual void completed(WorkflowInstance& workflow) const = 0; // Added: Project is complete
-        virtual void suspended(WorkflowInstance& workflow) const = 0; // Added: Project can be suspended only after it was approved by human
+        virtual void pending(WorkflowInstance& workflow) const; // Added: Pending for while they first submit their request and REMOVED "start". This is the default state when they begin
+        virtual void accepted(WorkflowInstance& workflow) const; // Added: Bot checked request and accepted, now needs human approval
+        virtual void rejected(WorkflowInstance& workflow) const; // Bot checked request and rejects
+        virtual void approved(WorkflowInstance& workflow) const; // Human checks and approves or after some time passes (we will explain this time thing not code it)
+        virtual void denied(WorkflowInstance& workflow) const; // Human chceks and denies the project
+        virtual void completed(WorkflowInstance& workflow) const ; // Added: Project is complete
+        virtual void suspended(WorkflowInstance& workflow) const; // Added: Project can be suspended only after it was approved by human
 };
 
 
