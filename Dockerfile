@@ -4,7 +4,6 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # 2. Install compiler, build tools, and debugging utilities
-# (This layer is cached by Docker and only downloads once)
 RUN apt-get update && apt-get install -y \
     build-essential \
     g++ \

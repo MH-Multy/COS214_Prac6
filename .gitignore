@@ -1,3 +1,12 @@
 main
 *.o
 *.out
+# Doxygen generated output
+docs/html/
+docs/latex/
+doxygen_sqlite3.db
+*.tag
+# Doxygen output
+html/
+latex/
+*.bak
