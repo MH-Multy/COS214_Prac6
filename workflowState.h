@@ -68,5 +68,17 @@ class DeniedState : public WorkItemState
         string getStateName() const override;
 };
 
+class CompletedState : public WorkItemState
+{
+    public:
+        string getStateName() const override;
+};
+
+class SuspendedState : public WorkItemState
+{
+    public:
+        string getStateName() const override;
+};
+
 
 #endif //WORKFLOWSTATE_H
