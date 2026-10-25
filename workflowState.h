@@ -2,6 +2,7 @@
 #define WORKFLOWSTATE_H
 
 #include <string>
+#include <iostream>
 using namespace std;
 
 // As this class isn't made yet, we change what it is called later
@@ -24,6 +25,9 @@ class WorkItemState
         virtual void denied(WorkflowInstance& workflow) const; // Human chceks and denies the project
         virtual void completed(WorkflowInstance& workflow) const ; // Added: Project is complete
         virtual void suspended(WorkflowInstance& workflow) const; // Added: Project can be suspended only after it was approved by human
+
+        // Added this to show and stop illegal state changes (like from pending to suspended)
+        void illegalState(WorkflowInstance& workflow, string& newState);
 };
 
 
