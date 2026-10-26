@@ -31,25 +31,30 @@ public:
         }
     }
 
+    virtual bool canHandle(const WorkflowInstance& wf) const {
+    return true; 
+    }
+
     std::shared_ptr<ValidationHandler> setNext(std::shared_ptr<ValidationHandler> successor) {
         next = successor;
         return successor;
     }
 
-    virtual ValidationResult handle(const WorkflowInstance& wf, 
-                                   ChainExecutionMode mode = ChainExecutionMode::AUDIT_ACCUMULATE) {
-        ValidationResult current = check(wf);
-
+    virtual ValidationResult handle(const WorkflowInstance& wf, ChainExecutionMode mode = ChainExecutionMode::AUDIT_ACCUMULATE) {
+      ValidationResult current;
+    if (this->canHandle(wf)) {
+        current = this->check(wf);
         if (mode == ChainExecutionMode::FAIL_FAST && !current.isValid()) {
             return current;
         }
+    }
 
-        if (next != nullptr) {
-            ValidationResult nextResult = next->handle(wf, mode);
-            current.merge(nextResult);
-        }
+    if (next != nullptr) {
+        ValidationResult nextResult = next->handle(wf, mode);
+        current.merge(nextResult);
+    }
 
-        return current;
+    return current;
     }
 };
 
