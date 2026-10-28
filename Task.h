@@ -11,10 +11,13 @@ class Task: public WorkItem{
         int assignedTo;
         string requiredRole;
     public:
-        bool execute( int actorId);
+        Task(int id, string& name, string& requiredRole, const string& status = "Pending");
+        bool execute( int actorId) override;
         void assignTo(int participantId);
         int getAssignee();
         string getRequiredRole();
+        bool isComplete() override;
+        bool isAvailable() override;
 };
 
 
