@@ -9,12 +9,13 @@ std::string AuthorizationHandler::getHandlerName() const {
 }
 
 bool AuthorizationHandler::canHandle(const WorkflowInstance& wf) const {
-    return !activity.empty() && wf.getCurrentActorId() > 0;
+    return !activity.empty() && wf.getRequest().getRequesterId() > 0;
 }
 
 ValidationResult AuthorizationHandler::check(const WorkflowInstance& wf) {
     ValidationResult result;
-    int actorId = wf.getCurrentActorId();
+    int actorId = wf.getRequest().getRequesterId();
+
     if (!directory) {
         result.addIssue(
             getHandlerName(),

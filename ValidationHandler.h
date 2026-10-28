@@ -31,7 +31,7 @@ public:
         }
     }
 
-    virtual bool canHandle(const WorkflowInstance& wf) const {
+    virtual bool canHandle(const WorkflowInstance&) const {
     return true; 
     }
 

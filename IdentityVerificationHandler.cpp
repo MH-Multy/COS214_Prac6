@@ -9,12 +9,13 @@ std::string IdentityVerificationHandler::getHandlerName() const {
 }
 
 bool IdentityVerificationHandler::canHandle(const WorkflowInstance& wf) const {
-    return wf.getCurrentActorId() > 0;
+    return wf.getRequest().getRequesterId() > 0;
 }
 
 ValidationResult IdentityVerificationHandler::check(const WorkflowInstance& wf) {
     ValidationResult result;
-    int actorId = wf.getCurrentActorId();
+    int actorId = wf.getRequest().getRequesterId();
+
     if (!directory) {
         result.addIssue(
             getHandlerName(),

@@ -12,7 +12,7 @@ ValidationResult RequiredAttributesHandler::check(const WorkflowInstance& wf) {
     ValidationResult result;
 
     for (const auto& key : keys) {
-        if (!wf.hasAttribute(key) || wf.getAttribute(key).empty()) {
+        if (wf.getRequest().getAttribute(key).empty()) {
             result.addIssue(
                 getHandlerName(),
                 "Missing or empty mandatory attribute: '" + key + "'.",

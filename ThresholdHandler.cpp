@@ -11,12 +11,18 @@ std::string ThresholdHandler::getHandlerName() const {
 }
 
 bool ThresholdHandler::canHandle(const WorkflowInstance& wf) const {
-    return wf.hasAttribute(attribute);
+    // True if the attribute key is present and non-empty in WorkflowRequest
+    return !wf.getRequest().getAttribute(attribute).empty();
 }
 
 ValidationResult ThresholdHandler::check(const WorkflowInstance& wf) {
     ValidationResult result;
-    std::string rawVal = wf.getAttribute(attribute);
+    std::string rawVal = wf.getRequest().getAttribute(attribute);
+
+    if (rawVal.empty()) {
+        return result; // Skip if empty
+    }
+
     std::stringstream inStream(rawVal);
     double val = 0.0;
     if (!(inStream >> val)) {
