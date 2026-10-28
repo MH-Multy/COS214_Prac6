@@ -5,7 +5,10 @@
 #include "OrganizationDirectory.h"
 #include <memory>
 #include <string>
-
+/**
+ * @addtogroup ChainOfResponsibility
+ * @{
+ */
 /**
  * @brief ConcreteHandler verifying whether an acting participant is authorized
  *        to perform a specific activity using the OrganizationDirectory target interface.
@@ -40,5 +43,7 @@ public:
     void setActivity(const std::string& act);
     std::shared_ptr<OrganizationDirectory> getDirectory() const;
 };
-
+/**
+ * @}
+ */
 #endif // AUTHORIZATION_HANDLER_H

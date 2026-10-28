@@ -4,7 +4,10 @@
 #include "OrganizationDirectory.h"
 #include "LegacyRecordSystem.h"
 #include <memory>
-
+/**
+ * @addtogroup Adapter
+ * @{
+ */
 /**
  * @brief Adapter in the GoF Adapter Pattern.
  *        Adapts LegacyRecordSystem to fit the OrganizationDirectory interface.
@@ -21,5 +24,7 @@ public:
     bool userExists(int id) const override;
     bool isAuthorized(int id, const std::string& activity) const override;
 };
-
+/**
+ * @}
+ */
 #endif // RECORD_SYSTEM_ADAPTER_H

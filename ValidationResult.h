@@ -3,19 +3,31 @@
 
 #include <string>
 #include <vector>
-
+/**
+ * @addtogroup ChainOfResponsibility
+ * @{
+ */
+/**
+ * @brief Severity classification for validation issues.
+ */
 enum class IssueSeverity {
     INFO,
     WARNING,
     CRITICAL_ERROR
 };
 
+/**
+ * @brief Encapsulates an individual diagnostic issue discovered during validation.
+ */
 struct ValidationIssue {
     std::string handlerName;
     std::string message;
     IssueSeverity severity;
 };
 
+/**
+ * @brief Aggregated outcome and diagnostic issue collector for the validation chain.
+ */
 class ValidationResult {
 private:
     bool valid;
@@ -24,6 +36,12 @@ private:
 public:
     ValidationResult() : valid(true) {}
 
+    /**
+     * @brief Appends a diagnostic finding. CRITICAL_ERROR invalidates the result.
+     * @param handler Name of the reporting handler.
+     * @param msg Descriptive explanation of the issue.
+     * @param sev Severity level (INFO, WARNING, CRITICAL_ERROR).
+     */
     void addIssue(const std::string& handler, const std::string& msg, IssueSeverity sev) {
         issues.push_back({handler, msg, sev});
         if (sev == IssueSeverity::CRITICAL_ERROR) {
@@ -31,6 +49,10 @@ public:
         }
     }
 
+    /**
+     * @brief Merges another validation result into this one.
+     * @param other Result object to aggregate.
+     */
     void merge(const ValidationResult& other) {
         if (!other.valid) {
             valid = false;
@@ -54,5 +76,7 @@ public:
         return report;
     }
 };
-
+/**
+ * @}
+ */
 #endif // VALIDATION_RESULT_H

@@ -5,7 +5,10 @@
 #include "OrganizationDirectory.h"
 #include <memory>
 #include <string>
-
+/**
+ * @addtogroup ChainOfResponsibility
+ * @{
+ */
 /**
  * @brief ConcreteHandler that verifies whether the acting participant 
  *        exists in the organization directory (Adapter target interface).
@@ -37,5 +40,7 @@ public:
 
     std::shared_ptr<OrganizationDirectory> getDirectory() const;
 };
-
+/**
+ * @}
+ */
 #endif // IDENTITY_VERIFICATION_HANDLER_H
