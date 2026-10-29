@@ -1,0 +1,15 @@
+main
+*.o
+*.out
+# Doxygen generated output
+docs/html/
+docs/latex/
+doxygen_sqlite3.db
+*.tag
+html/
+latex/
+*.bak
+PLAN.md
+RULES.md
+CLAUDE.md
+Extra/
