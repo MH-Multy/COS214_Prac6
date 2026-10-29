@@ -6,7 +6,10 @@ docs/html/
 docs/latex/
 doxygen_sqlite3.db
 *.tag
-# Doxygen output
 html/
 latex/
 *.bak
+PLAN.md
+RULES.md
+CLAUDE.md
+Extra/
