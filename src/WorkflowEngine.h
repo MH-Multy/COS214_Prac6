@@ -1,28 +1,20 @@
 #ifndef WORKFLOWENGINE_H
 #define WORKFLOWENGINE_H
-#include "ComponentFactory.h"
-#include "Mediator.h"
+#include "WorkflowFactory.h"
 
-/** Generic engine: the Abstract Factory's client. Contains no lab/loan code. */
+/** STAND-IN for the core WorkflowEngine. The two factory calls in
+ *  startWorkflow() are the Abstract Factory's only client code: copy them
+ *  into the real engine. Nothing here knows about any industry. */
 class WorkflowEngine {
 public:
-    WorkflowEngine(const WorkflowComponentFactory& f, TaskDispatcher& d)
-        : factory(f), disp(d) {}
-    /** Starts one instance; returns the item so the caller can act on it. */
-    std::unique_ptr<WorkItem> start(const std::string& name) {
-        std::unique_ptr<WorkItem> item = factory.createWorkItem(name);
-        payload = factory.createPayload();
-        router  = factory.createRouter();
-        disp.setRouter(router.get());
-        std::cout << "\n== " << item->industry() << ": " << name
-                  << " | payload " << payload->describe() << " ==\n";
-        disp.submit(item.get());                // Mediator takes over
-        return item;
-    }
+    WorkflowEngine();
+    int startWorkflow(std::shared_ptr<const WorkflowDefinition> def, const WorkflowRequest& req);
+    std::shared_ptr<WorkflowInstance> getInstance(int id) const;
+    void registerParticipant(const Participant& p);
+    const Participant& getParticipant(int id) const;
 private:
-    const WorkflowComponentFactory& factory;
-    TaskDispatcher& disp;
-    std::unique_ptr<Payload> payload;
-    std::unique_ptr<TaskRouter> router;
+    std::map<int, std::shared_ptr<WorkflowInstance> > instances;
+    std::map<int, Participant> participants;
+    int nextId;
 };
 #endif
