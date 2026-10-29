@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include "workflowState.h"
+#include "ApprovalPolicy.h"
 
 // THIS IS NOT COMPLETE
 // I did it for what was needed in State design

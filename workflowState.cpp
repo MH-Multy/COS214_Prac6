@@ -3,6 +3,8 @@
 // -------- WorkItemState ------
 WorkItemState::~WorkItemState(){}
 
+// All by defalut call the error if they are not overriden, therefor it does not need manual checking of states
+// as the classes do not have overrides for them
 void WorkItemState::illegalState(WorkflowInstance& workflow, string& newState)
 {
     cout << "\nError <illegal state change>: Cannot change from '" << workflow.getStateName() << "' to '" << newState <<"' \n";
