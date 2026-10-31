@@ -1,8 +1,19 @@
+/**
+ * @file WorkflowRequest.cpp
+ * @brief Implementation of WorkflowRequest.
+ */
 #include "WorkflowRequest.h"
 
 WorkflowRequest::WorkflowRequest(){
     this -> name = "";
     this -> requesterId = 0;
+    this -> deadlineDays = 0;
+    this -> priority = 0;
+}
+
+WorkflowRequest::WorkflowRequest(const string& name, int requesterId){
+    this -> name = name;
+    this -> requesterId = requesterId;
     this -> deadlineDays = 0;
     this -> priority = 0;
 }

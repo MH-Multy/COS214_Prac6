@@ -1,3 +1,7 @@
+/**
+ * @file RequestSummaryBuilder.cpp
+ * @brief Implementation of RequestSummaryBuilder.
+ */
 #include "RequestSummaryBuilder.h"
 
 void RequestSummaryBuilder::reset(){

@@ -1,3 +1,7 @@
+/**
+ * @file WorkflowRequestBuilder.cpp
+ * @brief Implementation of WorkflowRequestBuilder.
+ */
 #include "WorkflowRequestBuilder.h"
 
 void WorkflowRequestBuilder::reset(){

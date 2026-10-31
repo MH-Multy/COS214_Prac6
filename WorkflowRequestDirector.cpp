@@ -1,4 +1,9 @@
+/**
+ * @file WorkflowRequestDirector.cpp
+ * @brief Implementation of WorkflowRequestDirector.
+ */
 #include "WorkflowRequestDirector.h"
+#include <stdexcept>
 
 WorkflowRequestDirector::WorkflowRequestDirector(WorkflowBuilder* b) : builder(b){
 }
@@ -8,6 +13,9 @@ void WorkflowRequestDirector::setBuilder(WorkflowBuilder* b){
 }
 
 void WorkflowRequestDirector::constructStandard(const map<string, string>& input){
+    if(builder == nullptr){
+        throw invalid_argument("WorkflowRequestDirector has no builder");
+    }
     string name;
     int requesterId = 0;
 
@@ -17,9 +25,12 @@ void WorkflowRequestDirector::constructStandard(const map<string, string>& input
     }
     it = input.find("requesterId");
     if(it != input.end()){
+        // stoi throws std::invalid_argument for non-numeric input; it is left to propagate
+        // so the user interface can report the bad value.
         requesterId = stoi(it->second);
     }
 
+    // Fixed construction order: the director decides the sequence, the builder decides the result.
     builder->reset();
     builder->buildHeader(name, requesterId);
     for(it = input.begin(); it != input.end(); ++it){
@@ -32,6 +43,9 @@ void WorkflowRequestDirector::constructStandard(const map<string, string>& input
 }
 
 void WorkflowRequestDirector::constructUrgent(const map<string, string>& input){
+    if(builder == nullptr){
+        throw invalid_argument("WorkflowRequestDirector has no builder");
+    }
     string name;
     int requesterId = 0;
 

@@ -11,11 +11,14 @@ class Task: public WorkItem{
         int assignedTo;
         string requiredRole;
     public:
-        Task(int id, string& name, string& requiredRole, const string& status = "Pending");
+        Task(int id, const string& name, const string& requiredRole, const string& status = "Pending");
         bool execute( int actorId) override;
-        void assignTo(int participantId);
-        int getAssignee();
-        string getRequiredRole();
+        void assignTo(int participantId) override;
+        int getAssignee() const override;
+        string getRequiredRole() const override;
+        void release() override;                 // Pending -> Approved (available)
+        bool reopen() override;                  // Completed -> Approved
+        const vector<shared_ptr<WorkItem>>& getChildren() const override;   // a leaf: always empty
         bool isComplete() override;
         bool isAvailable() override;
 };

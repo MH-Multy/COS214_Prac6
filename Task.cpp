@@ -1,6 +1,6 @@
 #include "Task.h"
 
-Task::Task(int id, string& name, string& requiredRole, const string& status):WorkItem(id, name, status){
+Task::Task(int id, const string& name, const string& requiredRole, const string& status):WorkItem(id, name, status){
     this -> assignedTo = -1;
     this -> requiredRole = requiredRole;
 }
@@ -17,11 +17,11 @@ void Task::assignTo(int participantId){
     assignedTo = participantId;
 }
 
-int Task::getAssignee(){
+int Task::getAssignee() const{
     return assignedTo;
 }
 
-string Task::getRequiredRole(){
+string Task::getRequiredRole() const{
     return requiredRole;
 }
 
@@ -41,4 +41,22 @@ bool Task::isAvailable(){
     else{
         return false;
     }
+}
+void Task::release(){
+    if(status == "Pending"){
+        status = "Approved";
+    }
+}
+
+bool Task::reopen(){
+    if(status != "Completed"){
+        return false;
+    }
+    status = "Approved";
+    return true;
+}
+
+const vector<shared_ptr<WorkItem>>& Task::getChildren() const{
+    static const vector<shared_ptr<WorkItem>> none;
+    return none;
 }
