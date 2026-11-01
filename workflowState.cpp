@@ -1,46 +1,59 @@
+/**
+ * @file workflowState.cpp
+ * @brief Implementation of the lifecycle states.
+ */
 #include "workflowState.h"
+#include "WorkflowInstance.h"
+#include "WorkflowEvent.h"
 
 // -------- WorkItemState ------
 WorkItemState::~WorkItemState(){}
 
-// All by defalut call the error if they are not overriden, therefor it does not need manual checking of states
-// as the classes do not have overrides for them
-void WorkItemState::illegalState(WorkflowInstance& workflow, string& newState)
+// All transitions call this by default if they are not overridden, so no manual checking of
+// states is needed: a state simply does not override the transitions it does not allow.
+void WorkItemState::illegalState(WorkflowInstance& workflow, const string& newState) const
 {
-    cout << "\nError <illegal state change>: Cannot change from '" << workflow.getStateName() << "' to '" << newState <<"' \n";
+    workflow.addEvent(WorkflowEvent("ILLEGAL_STATE", workflow.getId(), -1,
+        "Cannot change from '" + getStateName() + "' to '" + newState + "'"));
 }
 
-void WorkItemState::accepted(WorkflowInstance& workflow) const 
+void WorkItemState::pending(WorkflowInstance& workflow) const
+{
+    illegalState(workflow, "Pending");
+}
+
+void WorkItemState::accepted(WorkflowInstance& workflow) const
 {
     illegalState(workflow, "Accepted");
-} 
+}
 
-void WorkItemState::rejected(WorkflowInstance& workflow) const 
+void WorkItemState::rejected(WorkflowInstance& workflow) const
 {
     illegalState(workflow, "Rejected");
 }
 
-void WorkItemState::approved(WorkflowInstance& workflow) const 
+void WorkItemState::approved(WorkflowInstance& workflow) const
 {
     illegalState(workflow, "Approved");
 }
 
-void WorkItemState::denied(WorkflowInstance& workflow) const 
+void WorkItemState::denied(WorkflowInstance& workflow, const string&) const
 {
     illegalState(workflow, "Denied");
-} 
+}
 
-void WorkItemState::completed(WorkflowInstance& workflow) const 
+void WorkItemState::completed(WorkflowInstance& workflow) const
 {
     illegalState(workflow, "Completed");
 }
 
-void WorkItemState::suspended(WorkflowInstance& workflow) const 
+void WorkItemState::suspended(WorkflowInstance& workflow) const
 {
     illegalState(workflow, "Suspended");
 }
 
-
+// Note: setState() replaces (and deletes) the current state object, so each transition
+// below does nothing else after calling it.
 
 // -------- PendingState -------
 string PendingState::getStateName() const
@@ -58,7 +71,6 @@ void PendingState::rejected(WorkflowInstance& workflow) const
     workflow.setState(new RejectedState{});
 }
 
-
 // --------- AcceptedState --------
 string AcceptedState::getStateName() const
 {
@@ -70,7 +82,7 @@ void AcceptedState::approved(WorkflowInstance& workflow) const
     workflow.setState(new ApprovedState{});
 }
 
-void AcceptedState::denied(WorkflowInstance& workflow) const
+void AcceptedState::denied(WorkflowInstance& workflow, const string&) const
 {
     workflow.setState(new DeniedState{});
 }
@@ -97,8 +109,8 @@ string RejectedState::getStateName() const
     return "Rejected";
 }
 
-// --------- DeniedSate -------------
-string DeniedSate::getStateName() const
+// --------- DeniedState -------------
+string DeniedState::getStateName() const
 {
     return "Denied";
 }
@@ -113,4 +125,10 @@ string CompletedState::getStateName() const
 string SuspendedState::getStateName() const
 {
     return "Suspended";
+}
+
+void SuspendedState::accepted(WorkflowInstance& workflow) const
+{
+    // Resume: the suspension is lifted and work continues.
+    workflow.setState(new ApprovedState{});
 }

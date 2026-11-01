@@ -1,39 +1,55 @@
+/**
+ * @file workflowState.h
+ * @brief State pattern: the lifecycle of a workflow instance.
+ */
 #ifndef WORKFLOWSTATE_H
 #define WORKFLOWSTATE_H
 
 #include <string>
-#include <iostream>
 using namespace std;
 
-// As this class isn't made yet, we change what it is called later
 class WorkflowInstance;
 
+/**
+ * @brief State: decides which lifecycle changes are legal for a workflow instance.
+ * @ingroup state
+ *
+ *     Pending --accepted--> Accepted --approved--> Approved --completed--> Completed
+ *        |                     |                    |   ^
+ *        +--rejected--> Rejected +--denied--> Denied  suspended  accepted (resume)
+ *                                                    v   |
+ *                                                  Suspended
+ *
+ * Every transition is virtual and, by default, calls illegalState(). A concrete
+ * state only overrides the transitions it allows, so illegal changes are
+ * refused without any if/else or switch on the state.
+ */
 // --------------------- Base State -----------------------
 class WorkItemState
 {
     public:
         virtual ~WorkItemState();
         // Will return a string of the item's current state
-        virtual string getStateName() const = 0; // changed function name from "getName" to make more sense
+        virtual string getStateName() const = 0;
 
-        // changed from bool to void as they do not need to return and made them const as they won't change
-        // Also made them virtual
-        virtual void pending(WorkflowInstance& workflow) const; // Added: Pending for while they first submit their request and REMOVED "start". This is the default state when they begin
-        virtual void accepted(WorkflowInstance& workflow) const; // Added: Bot checked request and accepted, now needs human approval
-        virtual void rejected(WorkflowInstance& workflow) const; // Bot checked request and rejects
-        virtual void approved(WorkflowInstance& workflow) const; // Human checks and approves or after some time passes (we will explain this time thing not code it)
-        virtual void denied(WorkflowInstance& workflow) const; // Human chceks and denies the project
-        virtual void completed(WorkflowInstance& workflow) const ; // Added: Project is complete
-        virtual void suspended(WorkflowInstance& workflow) const; // Added: Project can be suspended only after it was approved by human
+        // By default every transition is illegal; concrete states override the ones they allow.
+        virtual void pending(WorkflowInstance& workflow) const;   // the default state when a request is submitted
+        virtual void accepted(WorkflowInstance& workflow) const;  // bot checked the request and accepted it (or: resume after a suspension)
+        virtual void rejected(WorkflowInstance& workflow) const;  // bot checked the request and rejected it
+        virtual void approved(WorkflowInstance& workflow) const;  // a person approved it, or the time limit passed
+        virtual void denied(WorkflowInstance& workflow, const string& message) const;  // a person denied it
+        virtual void completed(WorkflowInstance& workflow) const; // all work is done
+        virtual void suspended(WorkflowInstance& workflow) const; // can only be suspended after it was approved
 
-        // Added this to show and stop illegal state changes (like from pending to suspended)
-        void illegalState(WorkflowInstance& workflow, string& newState);
+        // Shows and stops illegal state changes (like from Pending to Suspended): the attempt is
+        // recorded in the instance's history and the state does not change.
+        void illegalState(WorkflowInstance& workflow, const string& newState) const;
 };
 
 
 // ---------------- Concrete States ----------------------
 
-// Pending can only be accepted or rejected
+/** @brief Submitted; waiting for automated validation. Can only be accepted or rejected. @ingroup state */
 class PendingState : public WorkItemState
 {
     public:
@@ -42,16 +58,16 @@ class PendingState : public WorkItemState
         void rejected(WorkflowInstance& workflow) const override;
 };
 
-// Accept can only be approved or denied
+/** @brief Passed validation; waiting for a person. Can only be approved or denied. @ingroup state */
 class AcceptedState : public WorkItemState
 {
     public:
         string getStateName() const override;
         void approved(WorkflowInstance& workflow) const override;
-        void denied(WorkflowInstance& workflow) const override;
+        void denied(WorkflowInstance& workflow, const string& message) const override;
 };
 
-// Approved can only be completed or suspended
+/** @brief Approved; work is in progress. Can only be completed or suspended. @ingroup state */
 class ApprovedState : public WorkItemState
 {
     public:
@@ -60,28 +76,33 @@ class ApprovedState : public WorkItemState
         void suspended(WorkflowInstance& workflow) const override;
 };
 
+/** @brief Failed validation (end state). @ingroup state */
 class RejectedState : public WorkItemState
 {
     public:
         string getStateName() const override;
 };
 
+/** @brief Turned down by an approver (end state). @ingroup state */
 class DeniedState : public WorkItemState
 {
     public:
         string getStateName() const override;
 };
 
+/** @brief All work done (end state). @ingroup state */
 class CompletedState : public WorkItemState
 {
     public:
         string getStateName() const override;
 };
 
+/** @brief Halted by an approver; accepted() resumes it to Approved. @ingroup state */
 class SuspendedState : public WorkItemState
 {
     public:
         string getStateName() const override;
+        void accepted(WorkflowInstance& workflow) const override;
 };
 
 
