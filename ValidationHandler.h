@@ -3,12 +3,6 @@
  * @brief Base Handler participant in the Chain of Responsibility pattern.
  * 
  */
-/**
- * @defgroup ChainOfResponsibility
- * @brief Dynamic validation pipeline and automated invariant safeguard handlers.
- * @{
- * @}
- */
 
 #ifndef VALIDATION_HANDLER_H
 #define VALIDATION_HANDLER_H
@@ -86,7 +80,5 @@ public:
     return current;
     }
 };
-/**
- * @}
- */
+
 #endif

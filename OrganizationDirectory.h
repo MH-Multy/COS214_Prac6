@@ -1,10 +1,3 @@
-/**
- * @defgroup Adapter
- * @brief Subsystem bridging modern directory queries to legacy record systems.
- * @{
- * @}
- */
-
 #ifndef ORGANIZATION_DIRECTORY_H
 #define ORGANIZATION_DIRECTORY_H
 
@@ -29,7 +22,5 @@ public:
      */
     virtual bool isAuthorized(int id, const std::string& activity) const = 0;
 };
-/**
- * @}
- */
+
 #endif // ORGANIZATION_DIRECTORY_H

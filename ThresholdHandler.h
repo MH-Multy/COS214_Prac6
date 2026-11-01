@@ -4,10 +4,6 @@
 #include "ValidationHandler.h"
 #include <string>
 /**
- * @addtogroup ChainOfResponsibility
- * @{
- */
-/**
  * @brief ConcreteHandler validating that numeric attributes do not exceed
  *        a prescribed maximum boundary (e.g., risk levels, loan amounts, temperatures).
  */
@@ -29,8 +25,5 @@ public:
     double getMaxValue() const;
     void setMaxValue(double maxVal);
 };
-/**
- * @}
- */
 
 #endif // THRESHOLD_HANDLER_H

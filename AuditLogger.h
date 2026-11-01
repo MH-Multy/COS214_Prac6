@@ -4,10 +4,7 @@
 #include "WorkflowObserver.h"
 #include <vector>
 #include <string>
-/**
- * @addtogroup Observer
- * @{
- */
+
 /**
  * @brief Concrete Observer recording an immutable audit trail of workflow events.
  */
@@ -28,7 +25,5 @@ public:
     void printLog() const;
     size_t getLogSize() const;
 };
-/**
- * @}
- */
+
 #endif // AUDIT_LOGGER_H

@@ -1,14 +1,10 @@
-
 #ifndef WORKFLOW_SUBJECT_H
 #define WORKFLOW_SUBJECT_H
 
 #include "WorkflowObserver.h"
 #include <vector>
 #include <memory>
-/**
- * @addtogroup Observer
- * @{
- */
+
 /**
  * @brief Subject in the GoF Observer Pattern.
  *        Maintains observer subscriptions and broadcasts workflow events.
@@ -37,7 +33,5 @@ public:
 
     size_t getObserverCount() const;
 };
-/**
- * @}
- */
+
 #endif // WORKFLOW_SUBJECT_H

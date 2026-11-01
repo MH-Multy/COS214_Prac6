@@ -1,10 +1,3 @@
-
-/**
- * @defgroup Observer Observer Pattern
- * @brief Event dispatching and subscriber notifications for workflow lifecycle transitions.
- * @{
- * @}
- */
 #ifndef WORKFLOW_OBSERVER_H
 #define WORKFLOW_OBSERVER_H
 
@@ -27,7 +20,5 @@ public:
      */
     virtual void update(const WorkflowEvent& event) = 0;
 };
-/**
- * @}
- */
+
 #endif // WORKFLOW_OBSERVER_H

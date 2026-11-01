@@ -4,10 +4,7 @@
 #include "ValidationHandler.h"
 #include <vector>
 #include <string>
-/**
- * @addtogroup ChainOfResponsibility
- * @{
- */
+
 /**
  * @brief ConcreteHandler that verifies all mandatory data fields
  *        exist on the WorkflowInstance before proceeding.
@@ -27,7 +24,5 @@ public:
     const std::vector<std::string>& getKeys() const;
     void addKey(const std::string& key);
 };
-/**
- * @}
- */
+
 #endif // REQUIRED_ATTRIBUTES_HANDLER_H

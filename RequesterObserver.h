@@ -6,10 +6,6 @@
 #include <string>
 #include <vector>
 /**
- * @addtogroup Observer
- * @{
- */
-/**
  * @brief Concrete Observer notifying the requester of status updates.
  */
 class RequesterObserver : public WorkflowObserver {
@@ -34,7 +30,5 @@ public:
     const std::vector<std::string>& getInbox() const;
     size_t getUnreadCount() const;
 };
-/**
- * @}
- */
+
 #endif // REQUESTER_OBSERVER_H

@@ -4,10 +4,7 @@
 #include "WorkflowObserver.h"
 #include <string>
 #include <vector>
-/**
- * @addtogroup Observer
- * @{
- */
+
 /**
  * @brief Concrete Observer alerting reviewers and managers of pending decisions.
  */
@@ -33,7 +30,5 @@ public:
     const std::vector<std::string>& getPendingApprovals() const;
     size_t getPendingCount() const;
 };
-/**
- * @}
- */
+
 #endif // APPROVER_OBSERVER_H
