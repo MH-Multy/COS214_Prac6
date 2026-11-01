@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+    command: sh -c "make && ./main"
+    
