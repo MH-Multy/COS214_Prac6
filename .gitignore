@@ -1,4 +1,5 @@
 main
+run_tests
 *.o
 *.out
 # Doxygen generated output

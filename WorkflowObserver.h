@@ -1,3 +1,4 @@
+
 /**
  * @defgroup Observer Observer Pattern
  * @brief Event dispatching and subscriber notifications for workflow lifecycle transitions.

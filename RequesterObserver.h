@@ -1,3 +1,4 @@
+
 #ifndef REQUESTER_OBSERVER_H
 #define REQUESTER_OBSERVER_H
 

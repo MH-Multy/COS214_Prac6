@@ -4,7 +4,8 @@
 #include <map>
 #include <vector>
 
-LegacyRecordSystem::LegacyRecordSystem() {
+LegacyRecordSystem::LegacyRecordSystem() 
+{
     // Seed some legacy mock records
     // ID 101: Dr. Sarah Khumalo
     legacyDb[101] = {"ROLE_STAFF", "BIOSAFETY_LEVEL_2", "LAB_EQUIPMENT_RESERVATION"};
@@ -12,7 +13,8 @@ LegacyRecordSystem::LegacyRecordSystem() {
     legacyDb[102] = {"ROLE_INTERN", "LAB_EQUIPMENT_RESERVATION"};
 }
 
-std::string LegacyRecordSystem::queryRecord(int recordId) const {
+std::string LegacyRecordSystem::queryRecord(int recordId) const 
+{
     auto it = legacyDb.find(recordId);
     if (it != legacyDb.end()) {
         return "STATUS:ACTIVE;ID:" + std::to_string(recordId);
@@ -20,7 +22,8 @@ std::string LegacyRecordSystem::queryRecord(int recordId) const {
     return "STATUS:NOT_FOUND";
 }
 
-std::string LegacyRecordSystem::lookupPermissions(int recordId) const {
+std::string LegacyRecordSystem::lookupPermissions(int recordId) const 
+{
     auto it = legacyDb.find(recordId);
     if (it == legacyDb.end()) {
         return "";
