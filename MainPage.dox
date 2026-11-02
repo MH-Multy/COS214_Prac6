@@ -1,0 +1,58 @@
+/**
+ * @mainpage TIVIDY: Enterprise Workflow Management System
+ * 
+ * @section overview_sec 1. System Overview
+ * **TIVIDY** is an extensible, high-throughput enterprise workflow orchestration engine developed in **C++20**.
+ * The system automates dynamic request validation, decoupled subsystem integration, distributed lifecycle 
+ * state management, composite work breakdown structures, and audit trails.
+ *
+ * Designed to demonstrate architectural versatility, TIVIDY serves disparate business domains using the same core engine without hardcoded business rules.
+ *
+ * ---
+ *
+ * @section arch_sec 2. Architectural Structure & GoF Design Patterns
+ * The system adheres to the **V4 Unified Architecture**, partitioning responsibilities across 11 Gang of Four (GoF) design patterns:
+ *
+ * | Pattern | Role in TIVIDY | Primary Classes |
+ * | :--- | :--- | :--- |
+ * | **Chain of Responsibility** | Dynamic pre-screening validation pipeline; selective invariant verification. | ValidationHandler, RequiredAttributesHandler, IdentityVerificationHandler, AuthorizationHandler, ThresholdHandler |
+ * | **Adapter** | Bridges incompatible legacy directory stores to modern lookup interfaces. | OrganizationDirectory, RecordSystemAdapter, LegacyRecordSystem |
+ * | **Observer** | Publish-subscribe event bus broadcasting lifecycle transitions to ledgers and inboxes. | WorkflowSubject, WorkflowObserver, AuditLogger, RequesterObserver, ApproverObserver |
+ * | **State** | Governs permissible workflow state transitions and invariant guard rules. | WorkflowState, PendingValidationState, PendingApprovalState, InProgressState, SuspendedState, CompletedState, RejectedState |
+ * | **Strategy** | Dynamically swaps authorization policies (timeout vs. human sign-off). | ApprovalPolicy, TimeoutApprovalPolicy, StrictApprovalPolicy |
+ * | **Command** | Encapsulates reversible lifecycle milestones with transactional undo history. | CommandInvoker, WorkflowAction, ApproveCommand, RejectCommand, SuspendCommand, ResumeCommand, EditReportCommand |
+ * | **Memento** | Tamper-evident snapshotting and revision rollback for workflow deliverables. | WorkflowReport, ReportMemento, ReportHistory |
+ * | **Composite & Iterator** | Hierarchical task trees with sequential/parallel execution and uniform traversal. | WorkItem, Task, CompositeWorkItem, WorkItemIterator, AvailableWorkIterator |
+ * | **Facade** | Client gateway insulating external frontends and TUIs from subsystem complexity. | WorkflowFacade |
+ * | **Builder** | Multi-attribute parameter assembly and standard vs. urgent SLA request construction. | WorkflowBuilder, WorkflowRequestBuilder, WorkflowRequestDirector, RequestSummaryBuilder |
+ * | **Abstract Factory** | Manufactures paired component families (task trees and governance policies). | WorkflowComponentFactory, LabWorkflowComponentFactory, LoanWorkflowComponentFactory |
+ *
+ * ---
+ *
+ * @section scenarios_sec 3. Production Scenarios
+ *
+ * @subsection scenario_lab 3.1 Laboratory Testing & Equipment Requisition
+ * - **Domain:** Academic & clinical laboratory resource reservation and containment monitoring.
+ * - **Key Invariants:**
+ *   - Requester must hold active containment certification (`BIOSAFETY_LEVEL_2` checked via RecordSystemAdapter).
+ *   - Numerical biohazard score threshold ceiling ($\le 3.0$).
+ *   - Contamination anomalies trigger SuspendCommand, halting operations and alerting supervisors via ApproverObserver.
+ *
+ * @subsection scenario_loan 3.2 Commercial & Retail Loan Origination
+ * - **Domain:** Financial risk analysis and credit allocation pipeline.
+ * - **Key Invariants:**
+ *   - Mandatory collateral verification and applicant credit scoring.
+ *   - Numerical debt-to-income threshold ceiling ($\le 0.45$).
+ *   - Low-risk micro-loans auto-approve via TimeoutApprovalPolicy, while high-value disbursements mandate supervisory sign-off.
+ *
+ * ---
+ *
+ * @section build_sec 4. Build, Test, and Execution
+ * - **Compilation:** `make` or `g++ -std=c++20 -Wall -Wextra ...`
+ * - **Automated Testing:** `make test` (Executed via `doctest.h` test suites)
+ * - **Documentation:** `doxygen Doxyfile`
+ * - **Containerization:** `docker compose up --build`
+ *
+ *
+ * @version 1.0
+ */
